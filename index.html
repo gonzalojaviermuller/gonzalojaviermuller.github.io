@@ -25,6 +25,29 @@
         padding: 10px;
       }
     </style>
+    <script>
+      // Create an array of possible names
+      const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
+
+      // Function to filter the list of names based on input text
+      function filterNames(input, dropdown) {
+        // Get the text value of the input field
+        const inputText = input.value.toLowerCase();
+        // Filter the names array to get the matching names
+        const matchingNames = names.filter(name => name.toLowerCase().startsWith(inputText));
+        // Remove existing options from the dropdown
+        while (dropdown.options.length > 0) {
+          dropdown.remove(0);
+        }
+        // Add the matching names as options to the dropdown
+        matchingNames.forEach(name => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.text = name;
+          dropdown.add(option);
+        });
+      }
+    </script>
   </head>
   <body>
     <h1 style="text-align: center; color: blue;">PyG Cube Standings</h1>
@@ -34,23 +57,45 @@
         <th>Looser</th>
       </tr>
       <tr>
-        <td><input type="text" name="input1"></td>
-        <td><input type="text" name="input2"></td>
+        <td>
+          <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
+          <select style="width: 100%;" name="dropdown1"></select>
+        </td>
+        <td>
+          <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
+          <select style="width: 100%;" name="dropdown2"></select>
+        </td>
       </tr>
       <tr>
-        <td><input type="text" name="input3"></td>
-        <td><input type="text" name="input4"></td>
+        <td>
+          <input type="text" name="input3" oninput="filterNames(this, this.nextElementSibling)">
+          <select style="width: 100%;" name="dropdown3"></select>
+        </td>
+        <td>
+          <input type="text" name="input4" oninput="filterNames(this, this.nextElementSibling)">
+          <select style="width: 100%;" name="dropdown4"></select>
+        </td>
       </tr>
       <tr>
-        <td><input type="text" name="input5"></td>
-        <td><input type="text" name="input6"></td>
+        <td>
+          <input type="text" name="input5" oninput="filterNames(this, this.nextElementSibling)">
+          <select style="width: 100%;" name="dropdown5"></select>
+        </td>
+        <td>
+          <input type="text" name="input6" oninput="filterNames(this, this.nextElementSibling)">
+          <select style="width: 100%;" name="dropdown6"></select>
+        </td>
       </tr>
       <tr>
-        <td><input type="text" name="input7"></td>
-        <td><input type="text" name="input8"></td>
+        <td>
+          <input type="text" name="input7" oninput="filterNames(this, this.nextElementSibling)">
+          <select style="width: 100%;" name="dropdown7"></select>
+        </td>
+        <td>
+          <input type="text" name="input8" oninput="filterNames(this, this.nextElementSibling)">
+          <select style="width: 100%;" name="dropdown8"></select>
+        </td>
       </tr>
-    </table>
-    <br>
     <div style="text-align: center;">
       <input type="submit" value="Send">
     </div>
