@@ -1,150 +1,96 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>PyG Cube Standings</title>
-    <style>
-      /* Add styles for the table */
-      table {
-        border: 1px solid black;
-        margin: 0 auto;
-      }
-      th {
-        font-weight: normal;
-        text-align: center;
-        color: white;
-        padding: 10px;
-      }
-      th:first-child {
-        background-color: green;
-      }
-      th:last-child {
-        background-color: red;
-      }
-      td {
-        text-align: center;
-        padding: 10px;
-      }
-      /* Add styles for the combined input and dropdown */
-      .input-container {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-      }
-      .input-container input[type="text"] {
-        width: 100%;
-        padding-right: 40px;
-      }
-      .input-container select {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 40px;
-        height: 100%;
-        border: none;
-        background-color: #f2f2f2;
-      }
-    </style>
-    <script>
-      // Define the list of names
-      const names = [
-        "Pipi",
-        "Chilper",
-        "Negro",
-        "Müller",
-        "Ale",
-        "Pataz",
-        "Sanchez",
-        "Facu",
-        "Sacha",
-        "Novaira",
-        "Juan"
-      ];
-
-      // Function to filter the list of names based on user input
-      function filterNames(input, dropdown) {
-        // Get the user input
-        const filterValue = input.value.toLowerCase();
-        // Filter the list of names based on the input
-        const filteredNames = names.filter(name =>
-          name.toLowerCase().startsWith(filterValue)
-        );
-        // Clear the dropdown options
-        dropdown.innerHTML = "";
-        // Add the filtered options to the dropdown
-        filteredNames.forEach(name => {
-          const option = document.createElement("option");
-          option.value = name;
-          dropdown.appendChild(option);
-        });
-      }
-    </script>
-  </head>
-  <body>
-    <h1 style="text-align: center; color: blue;">PyG Cube Standings</h1>
-    <table>
-      <tr>
-        <th>Winner</th>
-        <th>Looser</th>
-      </tr>
-      <tr>
-        <td>
-          <div class="input-container">
-            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
-            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
-          </div>
-        </td>
-        <td>
-          <div class="input-container">
-            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
-            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="input-container">
-            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
-            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
-          </div>
-        </td>
-        <td>
-          <div class="input-container">
-            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
-            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="input-container">
-            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
-            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
-          </div>
-        </td>
-        <td>
-          <div class="input-container">
-            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
-            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="input-container">
-            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
-            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
-          </div>
-        </td>
-        <td>
-          <div class="input-container">
-            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
-            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
-          </div>
-        </td>
-      </tr>
-      
-    <div style="text-align: center;">
-      <input type="submit" value="Send">
-    </div>
-  </body>
+<head>
+	<title>PyG Cube Standings</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			margin: auto;
+			border: 1px solid black;
+		}
+		th {
+			background-color: green;
+			color: white;
+			padding: 10px;
+		}
+		th:last-child {
+			background-color: red;
+		}
+		td {
+			padding: 10px;
+			text-align: center;
+		}
+		input {
+			padding: 5px;
+			font-size: 16px;
+		}
+		button {
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: blue;
+			color: white;
+			border: none;
+			cursor: pointer;
+			margin-top: 10px;
+			display: block;
+			margin: auto;
+		}
+	</style>
+</head>
+<body>
+	<h1 style="text-align:center; color: blue;">PyG Cube Standings</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Winner</th>
+				<th>Looser</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<input type="text" id="winner-input" oninput="showDropdown('winner')" autocomplete="off">
+					<div id="winner-dropdown" style="display:none;">
+						<select id="winner-select"></select>
+					</div>
+				</td>
+				<td>
+					<input type="text" id="looser-input" oninput="showDropdown('looser')" autocomplete="off">
+					<div id="looser-dropdown" style="display:none;">
+						<select id="looser-select"></select>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<button onclick="sendResults()">Send</button>
+	<script>
+		const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
+		
+		function showDropdown(inputType) {
+			const input = document.getElementById(inputType + "-input");
+			const dropdown = document.getElementById(inputType + "-dropdown");
+			const select = document.getElementById(inputType + "-select");
+			select.innerHTML = "";
+			const inputText = input.value.toLowerCase();
+			const matchingNames = names.filter(name => name.toLowerCase().startsWith(inputText));
+			if (matchingNames.length > 0) {
+				matchingNames.forEach(name => {
+					const option = document.createElement("option");
+					option.value = name;
+					select.appendChild(option);
+				});
+				dropdown.style.display = "block";
+			} else {
+				dropdown.style.display = "none";
+			}
+		}
+		
+		function sendResults() {
+			const winner = document.getElementById("winner-input").value;
+			const looser = document.getElementById("looser-input").value;
+			alert(`Winner: ${winner}\nLooser: ${looser}`);
+		}
+	</script>
+</body>
 </html>
