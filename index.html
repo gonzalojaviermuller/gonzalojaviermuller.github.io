@@ -24,27 +24,57 @@
         text-align: center;
         padding: 10px;
       }
+      /* Add styles for the combined input and dropdown */
+      .input-container {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+      }
+      .input-container input[type="text"] {
+        width: 100%;
+        padding-right: 40px;
+      }
+      .input-container select {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 100%;
+        border: none;
+        background-color: #f2f2f2;
+      }
     </style>
     <script>
-      // Create an array of possible names
-      const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
+      // Define the list of names
+      const names = [
+        "Pipi",
+        "Chilper",
+        "Negro",
+        "Müller",
+        "Ale",
+        "Pataz",
+        "Sanchez",
+        "Facu",
+        "Sacha",
+        "Novaira",
+        "Juan"
+      ];
 
-      // Function to filter the list of names based on input text
+      // Function to filter the list of names based on user input
       function filterNames(input, dropdown) {
-        // Get the text value of the input field
-        const inputText = input.value.toLowerCase();
-        // Filter the names array to get the matching names
-        const matchingNames = names.filter(name => name.toLowerCase().startsWith(inputText));
-        // Remove existing options from the dropdown
-        while (dropdown.options.length > 0) {
-          dropdown.remove(0);
-        }
-        // Add the matching names as options to the dropdown
-        matchingNames.forEach(name => {
+        // Get the user input
+        const filterValue = input.value.toLowerCase();
+        // Filter the list of names based on the input
+        const filteredNames = names.filter(name =>
+          name.toLowerCase().startsWith(filterValue)
+        );
+        // Clear the dropdown options
+        dropdown.innerHTML = "";
+        // Add the filtered options to the dropdown
+        filteredNames.forEach(name => {
           const option = document.createElement("option");
           option.value = name;
-          option.text = name;
-          dropdown.add(option);
+          dropdown.appendChild(option);
         });
       }
     </script>
@@ -58,42 +88,72 @@
       </tr>
       <tr>
         <td>
-          <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
-          <select style="width: 100%;" name="dropdown1"></select>
+          <div class="input-container">
+            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
         </td>
         <td>
-          <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
-          <select style="width: 100%;" name="dropdown2"></select>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input type="text" name="input3" oninput="filterNames(this, this.nextElementSibling)">
-          <select style="width: 100%;" name="dropdown3"></select>
-        </td>
-        <td>
-          <input type="text" name="input4" oninput="filterNames(this, this.nextElementSibling)">
-          <select style="width: 100%;" name="dropdown4"></select>
+          <div class="input-container">
+            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
         </td>
       </tr>
       <tr>
         <td>
-          <input type="text" name="input5" oninput="filterNames(this, this.nextElementSibling)">
-          <select style="width: 100%;" name="dropdown5"></select>
+          <div class="input-container">
+            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
         </td>
         <td>
-          <input type="text" name="input6" oninput="filterNames(this, this.nextElementSibling)">
-          <select style="width: 100%;" name="dropdown6"></select>
+          <div class="input-container">
+            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
         </td>
       </tr>
       <tr>
         <td>
-          <input type="text" name="input7" oninput="filterNames(this, this.nextElementSibling)">
-          <select style="width: 100%;" name="dropdown7"></select>
+          <div class="input-container">
+            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
         </td>
         <td>
-          <input type="text" name="input8" oninput="filterNames(this, this.nextElementSibling)">
-          <select style="width: 100%;" name="dropdown8"></select>
+          <div class="input-container">
+            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="input-container">
+            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
+        </td>
+        <td>
+          <div class="input-container">
+            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="input-container">
+            <input type="text" name="input1" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown1" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
+        </td>
+        <td>
+          <div class="input-container">
+            <input type="text" name="input2" oninput="filterNames(this, this.nextElementSibling)">
+            <select name="dropdown2" onchange="this.previousElementSibling.value = this.value;"></select>
+          </div>
         </td>
       </tr>
     <div style="text-align: center;">
