@@ -73,27 +73,23 @@
 	</style>
 </head>
 <body>
-	<h1>PyG Cube Standings</h1>
+	<h1 style="text-align:center;">PyG Cube Standings</h1>
 	<table>
 		<thead>
 			<tr>
 				<th>Winner</th>
-				<th>Looser</th>
+				<th>Loser</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>
-					<div class="dropdown">
-						<input type="text" id="winner-input" oninput="showDropdown('winner')" autocomplete="off">
-						<div class="dropdown-content" id="winner-dropdown"></div>
-					</div>
+				<td class="dropdown-container">
+					<input type="text" id="winner-input" oninput="showDropdown('winner')" autocomplete="off">
+					<div class="dropdown-content" id="winner-dropdown"></div>
 				</td>
-				<td>
-					<div class="dropdown">
-						<input type="text" id="looser-input" oninput="showDropdown('looser')" autocomplete="off">
-						<div class="dropdown-content" id="looser-dropdown"></div>
-					</div>
+				<td class="dropdown-container">
+					<input type="text" id="loser-input" oninput="showDropdown('loser')" autocomplete="off">
+					<div class="dropdown-content" id="loser-dropdown"></div>
 				</td>
 			</tr>
 		</tbody>
@@ -105,26 +101,39 @@
 		function showDropdown(inputType) {
 			const input = document.getElementById(inputType + "-input");
 			const dropdown = document.getElementById(inputType + "-dropdown");
-			const select = document.getElementById(inputType + "-select");
-			select.innerHTML = "";
+			dropdown.innerHTML = "";
 			const inputText = input.value.toLowerCase();
 			const matchingNames = names.filter(name => name.toLowerCase().startsWith(inputText));
+			
 			if (matchingNames.length > 0) {
+				const select = document.createElement("select");
+				select.setAttribute("onchange", `selectName('${inputType}')`);
+				dropdown.appendChild(select);
+				
 				matchingNames.forEach(name => {
 					const option = document.createElement("option");
-					option.value = name;
-					select.appendChild(option);
+					option.text = name;
+					select.add(option);
 				});
-				dropdown.style.display = "block";
-			} else {
-				dropdown.style.display = "none";
 			}
+			
+			dropdown.style.display = (matchingNames.length > 0) ? "block" : "none";
+		}
+		
+		function selectName(inputType) {
+			const input = document.getElementById(inputType + "-input");
+			const dropdown = document.getElementById(inputType + "-dropdown");
+			const selectedOption = dropdown.options[dropdown.selectedIndex];
+			input.value = selectedOption.text;
+			dropdown.style.display = "none";
 		}
 		
 		function sendResults() {
-			const winner = document.getElementById("winner-input").value;
-			const looser = document.getElementById("looser-input").value;
-			alert(`Winner: ${winner}\nLooser: ${looser}`);
+			const winnerInput = document.getElementById("winner-input");
+			const loserInput = document.getElementById("loser-input");
+			alert(`Winner: ${winnerInput.value}\nLoser: ${loserInput.value}`);
+			winnerInput.value = "";
+			loserInput.value = "";
 		}
 	</script>
 </body>
