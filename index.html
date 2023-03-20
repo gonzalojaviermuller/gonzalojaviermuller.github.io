@@ -1,157 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>PyG Cube Standings</title>
 	<style>
+		body {
+			font-family: Arial, sans-serif;
+			text-align: center;
+		}
+		h1 {
+			color: blue;
+		}
 		table {
 			margin: auto;
-			text-align: center;
-			border-collapse: collapse;
-		}
-		th, td {
-			padding: 10px;
-		}
-		th {
-			background-color: #1E90FF;
-			color: white;
-			font-size: 24px;
 			border: 1px solid black;
 		}
 		td {
-			font-size: 20px;
-			border: 1px solid black;
-		}
-		input[type="text"] {
-			width: 100%;
-			font-size: 24px;
 			padding: 10px;
-			box-sizing: border-box;
 		}
-		#sendBtn {
-			font-size: 24px;
-			padding: 10px;
+		th {
+			color: green;
+		}
+		th:last-child {
+			color: red;
+		}
+		input {
+			padding: 5px;
+			margin: 5px;
+			width: 150px;
 		}
 		#results {
 			position: absolute;
 			display: none;
-			z-index: 999;
-			width: 100%;
-			max-height: 200px;
-			overflow-y: auto;
 			background-color: white;
-			border: 1px solid black;
-		}
-		#results ul {
-			list-style: none;
-			padding: 0;
-			margin: 0;
-		}
-		#results ul li {
-			padding: 10px;
-			cursor: pointer;
-		}
-		#results ul li:hover {
-			background-color: #1E90FF;
-			color: white;
+			border: 1px solid gray;
+			z-index: 1;
 		}
 	</style>
+	<script>
+		document.addEventListener("DOMContentLoaded", function(event) { 
+			// Get all input elements
+			var inputs = document.getElementsByTagName("input");
+
+			// Add event listeners for each input
+			for (var i = 0; i < inputs.length; i++) {
+				inputs[i].addEventListener("input", function() {
+					showResults(this);
+				});
+				inputs[i].addEventListener("blur", function() {
+					hideResults();
+				});
+			}
+		});
+
+		// Show the list of possible names
+		function showResults(input) {
+			// Get the list of names that match the input value
+			var names = [
+				"Pipi",
+				"Chilper",
+				"Negro",
+				"Müller",
+				"Ale",
+				"Pataz",
+				"Sanchez",
+				"Facu",
+				"Sacha",
+				"Novaira",
+				"Juan"
+			];
+			var matchingNames = names.filter(function(name) {
+				return name.toLowerCase().indexOf(input.value.toLowerCase()) === 0;
+			});
+
+			// Create the list of results
+			var resultsList = document.createElement("ul");
+			resultsList.id = "results";
+			for (var i = 0; i < matchingNames.length; i++) {
+				var resultItem = document.createElement("li");
+				resultItem.textContent = matchingNames[i];
+				resultItem.addEventListener("click", function() {
+					input.value = this.textContent;
+					hideResults();
+				});
+				resultsList.appendChild(resultItem);
+			}
+
+			// Position the list of results under the input field
+			var inputRect = input.getBoundingClientRect();
+			resultsList.style.left = inputRect.left + "px";
+			resultsList.style.top = inputRect.bottom + "px";
+			resultsList.style.width = inputRect.width + "px";
+
+			// Add the list of results to the page
+			document.body.appendChild(resultsList);
+		}
+
+		// Hide the list of possible names
+		function hideResults() {
+			var resultsList = document.getElementById("results");
+			if (resultsList !== null) {
+				resultsList.parentNode.removeChild(resultsList);
+			}
+		}
+
+		// Reset all input fields when the send button is clicked
+		function resetInputs() {
+			var inputs = document.getElementsByTagName("input");
+			for (var i = 0; i < inputs.length; i++) {
+				inputs[i].value = "";
+			}
+		}
+	</script>
 </head>
 <body>
+	<h1>PyG Cube Standings</h1>
 	<table>
-		<thead>
-			<tr>
-				<th>Winner</th>
-				<th>Loser</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><input type="text" id="winnerInput"></td>
-				<td><input type="text" id="loserInput"></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="winnerInput2"></td>
-				<td><input type="text" id="loserInput2"></td>
-			</tr>
-			<tr>
-				<td colspan="2"><button id="sendBtn">Send</button></td>
-			</tr>
-		</tbody>
+		<tr>
+			<th>Winner</th>
+			<th>Looser</th>
+		</tr>
+		<tr>
+			<td><input type="text" placeholder="Enter name"></td>
+			<td><input type="text" placeholder="Enter name"></td>
+		</tr>
+		<tr>
+			<td><input type="text" placeholder="Enter name"></td>
+			<td><input type="text" placeholder="Enter name"></td>
+		</tr>
 	</table>
-
-	<div id="results"></div>
-
-  <script>
-    const winnerInput = document.getElementById("winner");
-    const loserInput = document.getElementById("loser");
-    const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
-    
-    function resetInputs() {
-        winnerInput.value = "";
-        loserInput.value = "";
-        hideResults();
-    }
-
-    function updateResults() {
-        const winnerResults = document.getElementById("winner-results");
-        const loserResults = document.getElementById("loser-results");
-        const winnerValue = winnerInput.value.toLowerCase();
-        const loserValue = loserInput.value.toLowerCase();
-        let winnerMatches = [];
-        let loserMatches = [];
-
-        for (let i = 0; i < names.length; i++) {
-            const name = names[i].toLowerCase();
-
-            if (name.includes(winnerValue)) {
-                winnerMatches.push(names[i]);
-            }
-
-            if (name.includes(loserValue)) {
-                loserMatches.push(names[i]);
-            }
-        }
-
-        winnerResults.innerHTML = "";
-        loserResults.innerHTML = "";
-
-        for (let i = 0; i < winnerMatches.length; i++) {
-            const option = document.createElement("div");
-            option.innerHTML = winnerMatches[i];
-            option.setAttribute("class", "result-option");
-            winnerResults.appendChild(option);
-        }
-
-        for (let i = 0; i < loserMatches.length; i++) {
-            const option = document.createElement("div");
-            option.innerHTML = loserMatches[i];
-            option.setAttribute("class", "result-option");
-            loserResults.appendChild(option);
-        }
-
-        if (winnerMatches.length > 0) {
-            winnerResults.style.display = "block";
-        } else {
-            winnerResults.style.display = "none";
-        }
-
-        if (loserMatches.length > 0) {
-            loserResults.style.display = "block";
-        } else {
-            loserResults.style.display = "none";
-        }
-    }
-
-    function hideResults() {
-        const winnerResults = document.getElementById("winner-results");
-        const loserResults = document.getElementById("loser-results");
-        winnerResults.style.display = "none";
-        loserResults.style.display = "none";
-    }
-
-    winnerInput.addEventListener("input", updateResults);
-    winnerInput.addEventListener("blur", hideResults);
-    loserInput.addEventListener("input", updateResults);
-    loserInput.addEventListener("blur", hideResults);
-</script>
+	<button onclick="resetInputs()">Send</button>
 </body>
 </html>
