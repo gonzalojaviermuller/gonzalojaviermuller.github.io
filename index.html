@@ -6,104 +6,53 @@
 		body {
 			font-family: Arial, sans-serif;
 			text-align: center;
+			margin: 0;
+			padding: 0;
 		}
 		h1 {
 			color: blue;
+			margin-top: 20px;
 		}
 		table {
-			margin: auto;
+			margin: 0 auto;
+			border: 1px solid black;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
+		th {
+			background-color: #eee;
+			color: black;
+			font-weight: normal;
+			padding: 10px;
+			text-align: center;
 			border: 1px solid black;
 		}
 		td {
 			padding: 10px;
-		}
-		th {
-			color: green;
-		}
-		th:last-child {
-			color: red;
+			text-align: center;
+			border: 1px solid black;
 		}
 		input {
 			padding: 5px;
-			margin: 5px;
-			width: 150px;
+			font-size: 16px;
+			border: none;
+			width: 100%;
 		}
-		#results {
-			position: absolute;
-			display: none;
-			background-color: white;
-			border: 1px solid gray;
-			z-index: 1;
+		input:focus {
+			outline: none;
+		}
+		button {
+			margin-top: 20px;
+			padding: 10px 20px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 16px;
 		}
 	</style>
 	<script>
-		document.addEventListener("DOMContentLoaded", function(event) { 
-			// Get all input elements
-			var inputs = document.getElementsByTagName("input");
-
-			// Add event listeners for each input
-			for (var i = 0; i < inputs.length; i++) {
-				inputs[i].addEventListener("input", function() {
-					showResults(this);
-				});
-				inputs[i].addEventListener("blur", function() {
-					hideResults();
-				});
-			}
-		});
-
-		// Show the list of possible names
-		function showResults(input) {
-			// Get the list of names that match the input value
-			var names = [
-				"Pipi",
-				"Chilper",
-				"Negro",
-				"Müller",
-				"Ale",
-				"Pataz",
-				"Sanchez",
-				"Facu",
-				"Sacha",
-				"Novaira",
-				"Juan"
-			];
-			var matchingNames = names.filter(function(name) {
-				return name.toLowerCase().indexOf(input.value.toLowerCase()) === 0;
-			});
-
-			// Create the list of results
-			var resultsList = document.createElement("ul");
-			resultsList.id = "results";
-			for (var i = 0; i < matchingNames.length; i++) {
-				var resultItem = document.createElement("li");
-				resultItem.textContent = matchingNames[i];
-				resultItem.addEventListener("click", function() {
-					input.value = this.textContent;
-					hideResults();
-				});
-				resultsList.appendChild(resultItem);
-			}
-
-			// Position the list of results under the input field
-			var inputRect = input.getBoundingClientRect();
-			resultsList.style.left = inputRect.left + "px";
-			resultsList.style.top = inputRect.bottom + "px";
-			resultsList.style.width = inputRect.width + "px";
-
-			// Add the list of results to the page
-			document.body.appendChild(resultsList);
-		}
-
-		// Hide the list of possible names
-		function hideResults() {
-			var resultsList = document.getElementById("results");
-			if (resultsList !== null) {
-				resultsList.parentNode.removeChild(resultsList);
-			}
-		}
-
-		// Reset all input fields when the send button is clicked
 		function resetInputs() {
 			var inputs = document.getElementsByTagName("input");
 			for (var i = 0; i < inputs.length; i++) {
@@ -116,18 +65,67 @@
 	<h1>PyG Cube Standings</h1>
 	<table>
 		<tr>
-			<th>Winner</th>
-			<th>Looser</th>
+			<th style="color:green">Winner</th>
+			<th style="color:red">Looser</th>
 		</tr>
 		<tr>
-			<td><input type="text" placeholder="Enter name"></td>
-			<td><input type="text" placeholder="Enter name"></td>
+			<td><input type="text" placeholder="Enter name"><div id="suggestions1"></div></td>
+			<td><input type="text" placeholder="Enter name"><div id="suggestions2"></div></td>
 		</tr>
 		<tr>
-			<td><input type="text" placeholder="Enter name"></td>
-			<td><input type="text" placeholder="Enter name"></td>
+			<td><input type="text" placeholder="Enter name"><div id="suggestions3"></div></td>
+			<td><input type="text" placeholder="Enter name"><div id="suggestions4"></div></td>
 		</tr>
 	</table>
 	<button onclick="resetInputs()">Send</button>
+	<script>
+		var names = [
+			"Pipi",
+			"Chilper",
+			"Negro",
+			"Müller",
+			"Ale",
+			"Pataz",
+			"Sanchez",
+			"Facu",
+			"Sacha",
+			"Novaira",
+			"Juan"
+		];
+
+		var inputs = document.getElementsByTagName("input");
+		for (var i = 0; i < inputs.length; i++) {
+			inputs[i].addEventListener("input", function() {
+				var inputValue = this.value;
+				var suggestionsId = this.id.replace("input", "suggestions");
+				var suggestionsDiv = document.getElementById(suggestionsId);
+				suggestionsDiv.innerHTML = "";
+				if (inputValue.length > 0) {
+					var matchingNames = names.filter(function(name) {
+						return name.toLowerCase().startsWith(inputValue.toLowerCase());
+					});
+					matchingNames.slice(0, 4).forEach(function(matchingName) {
+						var suggestion = document.createElement("div");
+						suggestion.classList.add("suggestion");
+						suggestion.innerHTML = matchingName;
+						suggestion.addEventListener("click", function() {
+							this.parentNode.previousSibling.value = this.innerHTML;
+							this.parentNode.innerHTML = "";
+						});
+						suggestionsDiv.appendChild(suggestion);
+					});
+				}
+			});
+		}
+
+		document.addEventListener("click", function(event) {
+			if (!event.target.classList.contains("suggestion") && !event.target.classList.contains("input")) {
+				var suggestions = document.getElementsByClassName("suggestions");
+				for (var i = 0; i < suggestions.length; i++) {
+					suggestions[i].innerHTML = "";
+				}
+			}
+		});
+	</script>
 </body>
 </html>
