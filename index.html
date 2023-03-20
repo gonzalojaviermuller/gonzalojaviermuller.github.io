@@ -1,155 +1,158 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>PyG Cube Standings</title>
-    <style>
-      body {
-        font-size: 1.2em;
-        text-align: center;
-        margin-top: 20px;
-      }
+<head>
+	<title>PyG Cube Standings</title>
+	<style>
+		table {
+			margin: auto;
+			text-align: center;
+			border-collapse: collapse;
+		}
+		th, td {
+			padding: 10px;
+		}
+		th {
+			background-color: #1E90FF;
+			color: white;
+			font-size: 24px;
+			border: 1px solid black;
+		}
+		td {
+			font-size: 20px;
+			border: 1px solid black;
+		}
+		input[type="text"] {
+			width: 100%;
+			font-size: 24px;
+			padding: 10px;
+			box-sizing: border-box;
+		}
+		#sendBtn {
+			font-size: 24px;
+			padding: 10px;
+		}
+		#results {
+			position: absolute;
+			display: none;
+			z-index: 999;
+			width: 100%;
+			max-height: 200px;
+			overflow-y: auto;
+			background-color: white;
+			border: 1px solid black;
+		}
+		#results ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+		#results ul li {
+			padding: 10px;
+			cursor: pointer;
+		}
+		#results ul li:hover {
+			background-color: #1E90FF;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>Winner</th>
+				<th>Loser</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="text" id="winnerInput"></td>
+				<td><input type="text" id="loserInput"></td>
+			</tr>
+			<tr>
+				<td><input type="text" id="winnerInput2"></td>
+				<td><input type="text" id="loserInput2"></td>
+			</tr>
+			<tr>
+				<td colspan="2"><button id="sendBtn">Send</button></td>
+			</tr>
+		</tbody>
+	</table>
 
-      table {
-        margin-left: auto;
-        margin-right: auto;
-        border-collapse: collapse;
-        border: 1px solid black;
-      }
+	<div id="results"></div>
 
-      th {
-        border: 1px solid black;
-        padding: 10px;
-        background-color: gray;
-        color: white;
-        font-size: 1.5em;
-      }
+	<script>
+    const winnerInput = document.getElementById("winner");
+    const loserInput = document.getElementById("loser");
+    const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
+    
+    function resetInputs() {
+        winnerInput.value = "";
+        loserInput.value = "";
+        hideResults();
+    }
 
-      td {
-        border: 1px solid black;
-        padding: 10px;
-        font-size: 1.2em;
-      }
+    function updateResults() {
+        const winnerResults = document.getElementById("winner-results");
+        const loserResults = document.getElementById("loser-results");
+        const winnerValue = winnerInput.value.toLowerCase();
+        const loserValue = loserInput.value.toLowerCase();
+        let winnerMatches = [];
+        let loserMatches = [];
 
-      input {
-        font-size: 1.2em;
-        padding: 5px;
-        width: 100%;
-        box-sizing: border-box;
-      }
+        for (let i = 0; i < names.length; i++) {
+            const name = names[i].toLowerCase();
 
-      .autocomplete-items {
-        position: absolute;
-        border: 1px solid gray;
-        border-bottom: none;
-        border-top: none;
-        z-index: 999;
-        top: 100%;
-        left: 0;
-        right: 0;
-      }
-
-      .autocomplete-items div {
-        padding: 10px;
-        cursor: pointer;
-        background-color: #fff;
-        border-bottom: 1px solid gray;
-      }
-
-      .autocomplete-items div:hover {
-        background-color: #e9e9e9;
-      }
-
-      .send {
-        font-size: 1.2em;
-        margin-top: 10px;
-        padding: 5px 10px;
-        background-color: blue;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="container">
-      <h1>PyG Cube Standings</h1>
-      <table>
-        <thead>
-          <tr>
-            <th style="color: green;">Winner</th>
-            <th style="color: red;">Looser</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <input type="text" id="input1" oninput="showResults(event)" placeholder="Type a name">
-              <ul id="results1"></ul>
-            </td>
-            <td>
-              <input type="text" id="input2" oninput="showResults(event)" placeholder="Type a name">
-              <ul id="results2"></ul>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input type="text" id="input3" oninput="showResults(event)" placeholder="Type a name">
-              <ul id="results3"></ul>
-            </td>
-            <td>
-              <input type="text" id="input4" oninput="showResults(event)" placeholder="Type a name">
-              <ul id="results4"></ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button onclick="resetInputs()">Send</button>
-    </div>
-  
-    <script>
-      const names = [
-        "Pipi",
-        "Chilper",
-        "Negro",
-        "Müller",
-        "Ale",
-        "Pataz",
-        "Sanchez",
-        "Facu",
-        "Sacha",
-        "Novaira",
-        "Juan"
-      ];
-  
-      function showResults(event) {
-        const input = event.target;
-        const inputValue = input.value.toLowerCase().trim();
-        const resultsId = input.id.replace("input", "results");
-        const results = document.getElementById(resultsId);
-        results.innerHTML = "";
-        if (inputValue.length > 0) {
-          const filteredNames = names.filter(name => name.toLowerCase().includes(inputValue));
-          filteredNames.forEach(name => {
-            const li = document.createElement("li");
-            li.innerText = name;
-            li.onclick = () => {
-              input.value = name;
-              results.innerHTML = "";
+            if (name.includes(winnerValue)) {
+                winnerMatches.push(names[i]);
             }
-            results.appendChild(li);
-          });
+
+            if (name.includes(loserValue)) {
+                loserMatches.push(names[i]);
+            }
         }
-      }
-  
-      function resetInputs() {
-        const inputs = document.querySelectorAll("input[type='text']");
-        inputs.forEach(input => {
-          input.value = "";
-          document.getElementById(input.id.replace("input", "results")).innerHTML = "";
-        });
-      }
-    </script>
-  </body>
+
+        winnerResults.innerHTML = "";
+        loserResults.innerHTML = "";
+
+        for (let i = 0; i < winnerMatches.length; i++) {
+            const option = document.createElement("div");
+            option.innerHTML = winnerMatches[i];
+            option.setAttribute("class", "result-option");
+            winnerResults.appendChild(option);
+        }
+
+        for (let i = 0; i < loserMatches.length; i++) {
+            const option = document.createElement("div");
+            option.innerHTML = loserMatches[i];
+            option.setAttribute("class", "result-option");
+            loserResults.appendChild(option);
+        }
+
+        if (winnerMatches.length > 0) {
+            winnerResults.style.display = "block";
+        } else {
+            winnerResults.style.display = "none";
+        }
+
+        if (loserMatches.length > 0) {
+            loserResults.style.display = "block";
+        } else {
+            loserResults.style.display = "none";
+        }
+    }
+
+    function hideResults() {
+        const winnerResults = document.getElementById("winner-results");
+        const loserResults = document.getElementById("loser-results");
+        winnerResults.style.display = "none";
+        loserResults.style.display = "none";
+    }
+
+    winnerInput.addEventListener("input", updateResults);
+    winnerInput.addEventListener("blur", hideResults);
+    loserInput.addEventListener("input", updateResults);
+    loserInput.addEventListener("blur", hideResults);
+</script>
+</body>
 </html>
