@@ -84,12 +84,12 @@
 		<tbody>
 			<tr>
 				<td class="dropdown-container">
-					<input type="text" id="winner-input" oninput="showDropdown('winner')" autocomplete="off">
-					<div class="dropdown-content" id="winner-dropdown"></div>
+					<input type="text" id="winner-input" oninput="showOptions('winner')" autocomplete="off">
+					<div class="options-container" id="winner-options"></div>
 				</td>
 				<td class="dropdown-container">
-					<input type="text" id="loser-input" oninput="showDropdown('loser')" autocomplete="off">
-					<div class="dropdown-content" id="loser-dropdown"></div>
+					<input type="text" id="loser-input" oninput="showOptions('loser')" autocomplete="off">
+					<div class="options-container" id="loser-options"></div>
 				</td>
 			</tr>
 		</tbody>
@@ -98,34 +98,35 @@
 	<script>
 		const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
 		
-		function showDropdown(inputType) {
+		function showOptions(inputType) {
 			const input = document.getElementById(inputType + "-input");
-			const dropdown = document.getElementById(inputType + "-dropdown");
-			dropdown.innerHTML = "";
+			const optionsContainer = document.getElementById(inputType + "-options");
+			optionsContainer.innerHTML = "";
 			const inputText = input.value.toLowerCase();
 			const matchingNames = names.filter(name => name.toLowerCase().startsWith(inputText));
 			
 			if (matchingNames.length > 0) {
-				const select = document.createElement("select");
-				select.setAttribute("onchange", `selectName('${inputType}')`);
-				dropdown.appendChild(select);
+				const optionsList = document.createElement("ul");
+				optionsContainer.appendChild(optionsList);
 				
 				matchingNames.forEach(name => {
-					const option = document.createElement("option");
-					option.text = name;
-					select.add(option);
+					const option = document.createElement("li");
+					option.textContent = name;
+					option.onclick = () => {
+						selectName(name, inputType);
+					};
+					optionsList.appendChild(option);
 				});
 			}
 			
-			dropdown.style.display = (matchingNames.length > 0) ? "block" : "none";
+			optionsContainer.style.display = (matchingNames.length > 0) ? "block" : "none";
 		}
 		
-		function selectName(inputType) {
+		function selectName(name, inputType) {
 			const input = document.getElementById(inputType + "-input");
-			const dropdown = document.getElementById(inputType + "-dropdown");
-			const selectedOption = dropdown.options[dropdown.selectedIndex];
-			input.value = selectedOption.text;
-			dropdown.style.display = "none";
+			const optionsContainer = document.getElementById(inputType + "-options");
+			input.value = name;
+			optionsContainer.style.display = "none";
 		}
 		
 		function sendResults() {
