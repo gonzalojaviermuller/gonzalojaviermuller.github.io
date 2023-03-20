@@ -69,23 +69,33 @@
 		<tbody>
 			<tr>
 				<td class="dropdown-container">
-					<input type="text" id="winner-input" oninput="showOptions('winner')" autocomplete="off">
-					<div class="options-container" id="winner-options"></div>
+					<input type="text" id="winner-input-1" oninput="showOptions('winner', 1)" autocomplete="off">
+					<div class="options-container" id="winner-options-1"></div>
 				</td>
 				<td class="dropdown-container">
-					<input type="text" id="loser-input" oninput="showOptions('loser')" autocomplete="off">
-					<div class="options-container" id="loser-options"></div>
+					<input type="text" id="loser-input-1" oninput="showOptions('loser', 1)" autocomplete="off">
+					<div class="options-container" id="loser-options-1"></div>
+				</td>
+			</tr>
+			<tr>
+				<td class="dropdown-container">
+					<input type="text" id="winner-input-2" oninput="showOptions('winner', 2)" autocomplete="off">
+					<div class="options-container" id="winner-options-2"></div>
+				</td>
+				<td class="dropdown-container">
+					<input type="text" id="loser-input-2" oninput="showOptions('loser', 2)" autocomplete="off">
+					<div class="options-container" id="loser-options-2"></div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<button onclick="sendResults()">Send</button>
 	<script>
-		const names = ["Pipi", "Chilper", "Negro", "Muller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
+		const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
 		
-		function showOptions(inputType) {
-			const input = document.getElementById(inputType + "-input");
-			const optionsContainer = document.getElementById(inputType + "-options");
+		function showOptions(inputType, row) {
+			const input = document.getElementById(inputType + "-input-" + row);
+			const optionsContainer = document.getElementById(inputType + "-options-" + row);
 			optionsContainer.innerHTML = "";
 			const inputText = input.value.toLowerCase();
 			const matchingNames = names.filter(name => name.toLowerCase().startsWith(inputText));
@@ -98,7 +108,7 @@
 					const option = document.createElement("li");
 					option.textContent = name;
 					option.onclick = () => {
-						selectName(name, inputType);
+						selectName(name, inputType, row);
 					};
 					optionsList.appendChild(option);
 				});
@@ -107,19 +117,18 @@
 			optionsContainer.style.display = (matchingNames.length > 0) ? "block" : "none";
 		}
 		
-		function selectName(name, inputType) {
-			const input = document.getElementById(inputType + "-input");
-			const optionsContainer = document.getElementById(inputType + "-options");
+		function selectName(name, inputType, row) {
+			const input = document.getElementById(inputType + "-input-" + row);
 			input.value = name;
+			hideOptions(inputType, row);
+		}
+		
+		function hideOptions(inputType, row) {
+			const optionsContainer = document.getElementById(inputType + "-options-" + row);
 			optionsContainer.style.display = "none";
 		}
 		
 		function sendResults() {
-			const winnerInput = document.getElementById("winner-input");
-			const loserInput = document.getElementById("loser-input");
-			alert(`Winner: ${winnerInput.value}\nLoser: ${loserInput.value}`);
-			winnerInput.value = "";
-			loserInput.value = "";
 		}
 	</script>
 </body>
