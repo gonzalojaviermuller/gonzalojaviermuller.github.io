@@ -1,6 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script>
+		var names = [
+			"Pipi",
+			"Chilper",
+			"Negro",
+			"Müller",
+			"Ale",
+			"Pataz",
+			"Sanchez",
+			"Facu",
+			"Sacha",
+			"Novaira",
+			"Juan"
+		];
+
+		var inputs = document.getElementsByTagName("input");
+		for (var i = 0; i < inputs.length; i++) {
+			inputs[i].addEventListener("input", function() {
+				var inputValue = this.value;
+				var suggestionsId = this.id.replace("input", "suggestions");
+				var suggestionsDiv = document.getElementById(suggestionsId);
+				suggestionsDiv.innerHTML = "";
+				if (inputValue.length > 0) {
+					var matchingNames = names.filter(function(name) {
+						return name.toLowerCase().startsWith(inputValue.toLowerCase());
+					});
+					matchingNames.slice(0, 4).forEach(function(matchingName) {
+						var suggestion = document.createElement("div");
+						suggestion.classList.add("suggestion");
+						suggestion.innerHTML = matchingName;
+						suggestion.addEventListener("click", function() {
+							this.parentNode.previousSibling.value = this.innerHTML;
+							this.parentNode.innerHTML = "";
+						});
+						suggestionsDiv.appendChild(suggestion);
+					});
+				}
+			});
+		}
+
+		document.addEventListener("click", function(event) {
+			if (!event.target.classList.contains("suggestion") && !event.target.classList.contains("input")) {
+				var suggestions = document.getElementsByClassName("suggestions");
+				for (var i = 0; i < suggestions.length; i++) {
+					suggestions[i].innerHTML = "";
+				}
+			}
+		});
+	</script>
 	<title>PyG Cube Standings</title>
 	<style>
 		body {
@@ -78,54 +127,5 @@
 		</tr>
 	</table>
 	<button onclick="resetInputs()">Send</button>
-	<script>
-		var names = [
-			"Pipi",
-			"Chilper",
-			"Negro",
-			"Müller",
-			"Ale",
-			"Pataz",
-			"Sanchez",
-			"Facu",
-			"Sacha",
-			"Novaira",
-			"Juan"
-		];
-
-		var inputs = document.getElementsByTagName("input");
-		for (var i = 0; i < inputs.length; i++) {
-			inputs[i].addEventListener("input", function() {
-				var inputValue = this.value;
-				var suggestionsId = this.id.replace("input", "suggestions");
-				var suggestionsDiv = document.getElementById(suggestionsId);
-				suggestionsDiv.innerHTML = "";
-				if (inputValue.length > 0) {
-					var matchingNames = names.filter(function(name) {
-						return name.toLowerCase().startsWith(inputValue.toLowerCase());
-					});
-					matchingNames.slice(0, 4).forEach(function(matchingName) {
-						var suggestion = document.createElement("div");
-						suggestion.classList.add("suggestion");
-						suggestion.innerHTML = matchingName;
-						suggestion.addEventListener("click", function() {
-							this.parentNode.previousSibling.value = this.innerHTML;
-							this.parentNode.innerHTML = "";
-						});
-						suggestionsDiv.appendChild(suggestion);
-					});
-				}
-			});
-		}
-
-		document.addEventListener("click", function(event) {
-			if (!event.target.classList.contains("suggestion") && !event.target.classList.contains("input")) {
-				var suggestions = document.getElementsByClassName("suggestions");
-				for (var i = 0; i < suggestions.length; i++) {
-					suggestions[i].innerHTML = "";
-				}
-			}
-		});
-	</script>
 </body>
 </html>
