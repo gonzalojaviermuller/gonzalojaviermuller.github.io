@@ -1,172 +1,82 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<style>
-		body {
-			font-size: 24px;
-		}
-		h1 {
-			color: blue;
-			text-align: center;
-		}
-		table {
-			margin: auto;
-			border-collapse: collapse;
-			margin-top: 30px;
-			margin-bottom: 30px;
-			border: 1px solid black;
-		}
-		td, th {
-			padding: 10px;
-			text-align: center;
-		}
-		th {
-			color: green;
-		}
-		th:last-child {
-			color: red;
-		}
-		input[type="text"] {
-			width: 100%;
-			padding: 10px;
-			box-sizing: border-box;
-			font-size: 24px;
-		}
-		.autocomplete {
-			position: relative;
-			display: inline-block;
-		}
-		.autocomplete-items {
-			position: absolute;
-			border: 1px solid black;
-			border-top: none;
-			z-index: 99;
-			top: 100%;
-			left: 0;
-			right: 0;
-			max-height: 200px;
-			overflow-y: auto;
-			box-sizing: border-box;
-			background-color: #fff;
-			font-size: 24px;
-		}
-		.autocomplete-items div {
-			padding: 10px;
-			cursor: pointer;
-			background-color: #fff;
-			border-bottom: 1px solid #ebebeb;
-		}
-		.autocomplete-items div:hover {
-			background-color: #ebebeb;
-		}
-		.autocomplete-active {
-			background-color: #ebebeb;
-		}
-		input[type="submit"] {
-			padding: 10px 20px;
-			background-color: blue;
-			color: white;
-			font-size: 24px;
-			border: none;
-			cursor: pointer;
-		}
-	</style>
-</head>
-    <body>
-      <h1 style="text-align:center; color:blue;">PyG Cube Standings</h1>
-      <table style="margin:auto; border:1px solid black;">
-        <thead>
-          <tr>
-            <th style="color:green;">Winner</th>
-            <th style="color:red;">Looser</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div style="position:relative;">
-                <input type="text" id="winner1" onkeyup="showResults(event, 'winner1')" onblur="hideResults('winner1')" style="width:100%; font-size:20px;">
-                <div id="winner1Results" style="display:none; position:absolute; top:100%; left:0; right:0; z-index:1;"></div>
-              </div>
-            </td>
-            <td>
-              <div style="position:relative;">
-                <input type="text" id="looser1" onkeyup="showResults(event, 'looser1')" onblur="hideResults('looser1')" style="width:100%; font-size:20px;">
-                <div id="looser1Results" style="display:none; position:absolute; top:100%; left:0; right:0; z-index:1;"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div style="position:relative;">
-                <input type="text" id="winner2" onkeyup="showResults(event, 'winner2')" onblur="hideResults('winner2')" style="width:100%; font-size:20px;">
-                <div id="winner2Results" style="display:none; position:absolute; top:100%; left:0; right:0; z-index:1;"></div>
-              </div>
-            </td>
-            <td>
-              <div style="position:relative;">
-                <input type="text" id="looser2" onkeyup="showResults(event, 'looser2')" onblur="hideResults('looser2')" style="width:100%; font-size:20px;">
-                <div id="looser2Results" style="display:none; position:absolute; top:100%; left:0; right:0; z-index:1;"></div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div style="text-align:center;">
-        <button onclick="resetInputs()" style="font-size:20px;">Send</button>
-      </div>
-      <script>
-        // Define the list of possible names
-        const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
-      
-        // Get the input elements
-        const input1 = document.getElementById("input1");
-        const input2 = document.getElementById("input2");
-      
-        // Get the results list elements
-        const resultList1 = document.getElementById("resultList1");
-        const resultList2 = document.getElementById("resultList2");
-      
-        // Add event listeners to the input elements
-        input1.addEventListener("input", (event) => {
-          const value = event.target.value.toLowerCase();
-          const filteredNames = names.filter((name) => name.toLowerCase().includes(value));
-          resultList1.innerHTML = "";
-          filteredNames.forEach((name) => {
-            const option = document.createElement("option");
-            option.value = name;
-            resultList1.appendChild(option);
-          });
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyG Cube Standings</title>
+  </head>
+  <body style="text-align:center;">
+    <h1 style="color: blue;">PyG Cube Standings</h1>
+    <table style="margin:auto; border:1px solid black;">
+      <tr>
+        <th style="color: green;">Winner</th>
+        <th style="color: red;">Looser</th>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" id="input1" style="font-size:24px;">
+          <select id="resultList1" style="font-size:24px; width: 100%; position: absolute; z-index: 1;"></select>
+        </td>
+        <td>
+          <input type="text" id="input2" style="font-size:24px;">
+          <select id="resultList2" style="font-size:24px; width: 100%; position: absolute; z-index: 1;"></select>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <button id="sendButton">Send</button>
+
+    <script>
+      // Define the list of possible names
+      const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
+
+      // Get the input elements
+      const input1 = document.getElementById("input1");
+      const input2 = document.getElementById("input2");
+
+      // Get the results list elements
+      const resultList1 = document.getElementById("resultList1");
+      const resultList2 = document.getElementById("resultList2");
+
+      // Add event listeners to the input elements
+      input1.addEventListener("input", (event) => {
+        const value = event.target.value.toLowerCase();
+        const filteredNames = names.filter((name) => name.toLowerCase().includes(value));
+        resultList1.innerHTML = "";
+        filteredNames.forEach((name) => {
+          const option = document.createElement("option");
+          option.value = name;
+          resultList1.appendChild(option);
         });
-      
-        input2.addEventListener("input", (event) => {
-          const value = event.target.value.toLowerCase();
-          const filteredNames = names.filter((name) => name.toLowerCase().includes(value));
-          resultList2.innerHTML = "";
-          filteredNames.forEach((name) => {
-            const option = document.createElement("option");
-            option.value = name;
-            resultList2.appendChild(option);
-          });
+      });
+
+      input2.addEventListener("input", (event) => {
+        const value = event.target.value.toLowerCase();
+        const filteredNames = names.filter((name) => name.toLowerCase().includes(value));
+        resultList2.innerHTML = "";
+        filteredNames.forEach((name) => {
+          const option = document.createElement("option");
+          option.value = name;
+          resultList2.appendChild(option);
         });
-      
-        // Add event listener to the send button
-        const sendButton = document.getElementById("sendButton");
-        sendButton.addEventListener("click", () => {
-          input1.value = "";
-          input2.value = "";
-          resultList1.innerHTML = "";
-          resultList2.innerHTML = "";
-        });
-      
-        // Hide the results list when input loses focus
-        input1.addEventListener("blur", () => {
-          resultList1.innerHTML = "";
-        });
-      
-        input2.addEventListener("blur", () => {
-          resultList2.innerHTML = "";
-        });
-      </script>
-</body>
+      });
+
+      // Add event listener to the send button
+      const sendButton = document.getElementById("sendButton");
+      sendButton.addEventListener("click", () => {
+        input1.value = "";
+        input2.value = "";
+        resultList1.innerHTML = "";
+        resultList2.innerHTML = "";
+      });
+
+      // Hide the results list when input loses focus
+      input1.addEventListener("blur", () => {
+        resultList1.innerHTML = "";
+      });
+
+      input2.addEventListener("blur", () => {
+        resultList2.innerHTML = "";
+      });
+    </script>
+  </body>
 </html>
