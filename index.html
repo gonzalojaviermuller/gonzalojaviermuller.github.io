@@ -1,59 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
 	<title>PyG Cube Standings</title>
 	<style>
 		body {
-			background-color: #f5f5f5;
+			font-size: 24px;
 		}
 		h1 {
 			color: blue;
 			text-align: center;
 		}
 		table {
-			border: 1px solid black;
 			margin: auto;
-			margin-top: 50px;
-			margin-bottom: 50px;
+			border-collapse: collapse;
+			margin-top: 30px;
+			margin-bottom: 30px;
+			border: 1px solid black;
 		}
-		th {
-			background-color: lightgray;
-			font-weight: bold;
-			padding: 10px;
-		}
-		td {
+		td, th {
 			padding: 10px;
 			text-align: center;
 		}
-		.dropdown-container {
-			position: relative;
+		th {
+			color: green;
 		}
-		.options-container {
-			background-color: white;
-			border: 1px solid gray;
-			display: none;
-			left: 0;
-			position: absolute;
-			top: 100%;
+		th:last-child {
+			color: red;
+		}
+		input[type="text"] {
 			width: 100%;
-			z-index: 1;
+			padding: 10px;
+			box-sizing: border-box;
+			font-size: 24px;
 		}
-		.options-container ul {
-			list-style: none;
-			margin: 0;
-			padding: 0;
+		.autocomplete {
+			position: relative;
+			display: inline-block;
 		}
-		.options-container li {
+		.autocomplete-items {
+			position: absolute;
+			border: 1px solid black;
+			border-top: none;
+			z-index: 99;
+			top: 100%;
+			left: 0;
+			right: 0;
+			max-height: 200px;
+			overflow-y: auto;
+			box-sizing: border-box;
+			background-color: #fff;
+			font-size: 24px;
+		}
+		.autocomplete-items div {
+			padding: 10px;
 			cursor: pointer;
-			padding: 5px;
+			background-color: #fff;
+			border-bottom: 1px solid #ebebeb;
 		}
-		.options-container li:hover {
-			background-color: lightgray;
+		.autocomplete-items div:hover {
+			background-color: #ebebeb;
 		}
-		button {
-			display: block;
-			margin: auto;
+		.autocomplete-active {
+			background-color: #ebebeb;
+		}
+		input[type="submit"] {
+			padding: 10px 20px;
+			background-color: blue;
+			color: white;
+			font-size: 24px;
+			border: none;
+			cursor: pointer;
 		}
 	</style>
 </head>
@@ -66,73 +82,101 @@
 				<th style="color: red;">Loser</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr>
-				<td class="dropdown-container">
-					<input type="text" id="winner-input-1" oninput="showOptions('winner', 1)" autocomplete="off">
-					<div class="options-container" id="winner-options-1"></div>
-				</td>
-				<td class="dropdown-container">
-					<input type="text" id="loser-input-1" oninput="showOptions('loser', 1)" autocomplete="off">
-					<div class="options-container" id="loser-options-1"></div>
-				</td>
-			</tr>
-			<tr>
-				<td class="dropdown-container">
-					<input type="text" id="winner-input-2" oninput="showOptions('winner', 2)" autocomplete="off">
-					<div class="options-container" id="winner-options-2"></div>
-				</td>
-				<td class="dropdown-container">
-					<input type="text" id="loser-input-2" oninput="showOptions('loser', 2)" autocomplete="off">
-					<div class="options-container" id="loser-options-2"></div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<button onclick="sendResults()">Send</button>
-	<script>
-		const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
-		
-		function showOptions(inputType, row) {
-			const input = document.getElementById(inputType + "-input-" + row);
-			const optionsContainer = document.getElementById(inputType + "-options-" + row);
-			optionsContainer.innerHTML = "";
-			const inputText = input.value.toLowerCase();
-			const matchingNames = names.filter(name => name.toLowerCase().startsWith(inputText));
-			
-			if (matchingNames.length > 0) {
-				const optionsList = document.createElement("ul");
-				optionsContainer.appendChild(optionsList);
-				
-				matchingNames.forEach(name => {
-					const option = document.createElement("li");
-					option.textContent = name;
-					option.onclick = () => {
-						selectName(name, inputType, row);
-					};
-					optionsList.appendChild(option);
-				});
-			}
-			
-			optionsContainer.style.display = (matchingNames.length > 0) ? "block" : "none";
-		}
-		
-		function selectName(name, inputType, row) {
-			const input = document.getElementById(inputType + "-input-" + row);
-			input.value = name;
-			const optionsContainer = document.getElementById(inputType + "-options-" + row);
-			optionsContainer.style.display = "none";
-		}
-		
-		function sendResults() {
-			const winner1 = document.getElementById("winner-input-1").value;
-			const loser1 = document.getElementById("loser-input-1").value;
-			const winner2 = document.getElementById("winner-input-2").value;
-			const loser2 = document.getElementById("loser-input-2").value;
-			
-			// do something with the results here
-			console.log("Results:", winner1, loser1, winner2, loser2);
-		}
-	</script>
+    <body>
+      <h1 style="text-align:center; color:blue;">PyG Cube Standings</h1>
+      <table style="margin:auto; border:1px solid black;">
+        <thead>
+          <tr>
+            <th style="color:green;">Winner</th>
+            <th style="color:red;">Looser</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="position:relative;">
+                <input type="text" id="winner1" onkeyup="showResults(event, 'winner1')" onblur="hideResults('winner1')" style="width:100%; font-size:20px;">
+                <div id="winner1Results" style="display:none; position:absolute; top:100%; left:0; right:0; z-index:1;"></div>
+              </div>
+            </td>
+            <td>
+              <div style="position:relative;">
+                <input type="text" id="looser1" onkeyup="showResults(event, 'looser1')" onblur="hideResults('looser1')" style="width:100%; font-size:20px;">
+                <div id="looser1Results" style="display:none; position:absolute; top:100%; left:0; right:0; z-index:1;"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="position:relative;">
+                <input type="text" id="winner2" onkeyup="showResults(event, 'winner2')" onblur="hideResults('winner2')" style="width:100%; font-size:20px;">
+                <div id="winner2Results" style="display:none; position:absolute; top:100%; left:0; right:0; z-index:1;"></div>
+              </div>
+            </td>
+            <td>
+              <div style="position:relative;">
+                <input type="text" id="looser2" onkeyup="showResults(event, 'looser2')" onblur="hideResults('looser2')" style="width:100%; font-size:20px;">
+                <div id="looser2Results" style="display:none; position:absolute; top:100%; left:0; right:0; z-index:1;"></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="text-align:center;">
+        <button onclick="resetInputs()" style="font-size:20px;">Send</button>
+      </div>
+      <script>
+        // Define the list of possible names
+        const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
+      
+        // Get the input elements
+        const input1 = document.getElementById("input1");
+        const input2 = document.getElementById("input2");
+      
+        // Get the results list elements
+        const resultList1 = document.getElementById("resultList1");
+        const resultList2 = document.getElementById("resultList2");
+      
+        // Add event listeners to the input elements
+        input1.addEventListener("input", (event) => {
+          const value = event.target.value.toLowerCase();
+          const filteredNames = names.filter((name) => name.toLowerCase().includes(value));
+          resultList1.innerHTML = "";
+          filteredNames.forEach((name) => {
+            const option = document.createElement("option");
+            option.value = name;
+            resultList1.appendChild(option);
+          });
+        });
+      
+        input2.addEventListener("input", (event) => {
+          const value = event.target.value.toLowerCase();
+          const filteredNames = names.filter((name) => name.toLowerCase().includes(value));
+          resultList2.innerHTML = "";
+          filteredNames.forEach((name) => {
+            const option = document.createElement("option");
+            option.value = name;
+            resultList2.appendChild(option);
+          });
+        });
+      
+        // Add event listener to the send button
+        const sendButton = document.getElementById("sendButton");
+        sendButton.addEventListener("click", () => {
+          input1.value = "";
+          input2.value = "";
+          resultList1.innerHTML = "";
+          resultList2.innerHTML = "";
+        });
+      
+        // Hide the results list when input loses focus
+        input1.addEventListener("blur", () => {
+          resultList1.innerHTML = "";
+        });
+      
+        input2.addEventListener("blur", () => {
+          resultList2.innerHTML = "";
+        });
+      </script>
 </body>
 </html>
