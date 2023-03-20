@@ -120,15 +120,18 @@
 		function selectName(name, inputType, row) {
 			const input = document.getElementById(inputType + "-input-" + row);
 			input.value = name;
-			hideOptions(inputType, row);
-		}
-		
-		function hideOptions(inputType, row) {
 			const optionsContainer = document.getElementById(inputType + "-options-" + row);
 			optionsContainer.style.display = "none";
 		}
 		
 		function sendResults() {
+			const winner1 = document.getElementById("winner-input-1").value;
+			const loser1 = document.getElementById("loser-input-1").value;
+			const winner2 = document.getElementById("winner-input-2").value;
+			const loser2 = document.getElementById("loser-input-2").value;
+			
+			// do something with the results here
+			console.log("Results:", winner1, loser1, winner2, loser2);
 		}
 	</script>
 </body>
