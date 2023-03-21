@@ -29,32 +29,7 @@
 			background-color: #3e8e41;
 		}
 	</style>
-	<script>
-		window.onload = function() {
-			// Define the array of names
-			var names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
-			
-			// Generate the dropdowns dynamically
-			var dropdowns = document.getElementsByTagName("select");
-			for (var i = 0; i < dropdowns.length; i++) {
-				// Create an option element for each name in the array
-				for (var j = 0; j < names.length; j++) {
-					var option = document.createElement("option");
-					option.text = names[j];
-					dropdowns[i].add(option);
-				}
-			}
-
-			// Get the send button
-			var sendButton = document.getElementById("send-button");
-			// Add event listener for click
-			sendButton.addEventListener("click", function() {
-				// Reset all dropdowns
-				for (var i = 0; i < dropdowns.length; i++) {
-					dropdowns[i].selectedIndex = 0;
-				}
-			});
-		}
+	<script src="app.js">	
 	</script>
 </head>
 <body>

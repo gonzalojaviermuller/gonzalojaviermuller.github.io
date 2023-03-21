@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "yfj.h.filess.io",
+            "port": 3307,
+            "driver": "MySQL",
+            "name": "PyG",
+            "database": "PyG_fourthhurt",
+            "username": "PyG_fourthhurt",
+            "password": "40ad0eda172bd5ffcad24f70a7d7d680264e6fbc"
+        }
+    ]
+}
