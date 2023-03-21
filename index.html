@@ -1,66 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PyG Cube</title>
+	<title>PyG Cube Standings</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
 		table {
 			border: 1px solid black;
-			border-collapse: collapse;
-			margin: 10px;
-		}
-		td {
-			padding: 5px;
-			border: 1px solid black;
+			margin: 0 auto;
 			text-align: center;
-			font-weight: bold;
-			font-size: 18px;
 		}
-		.green {
-			color: green;
+		select {
+			width: 100%;
+			padding: 5px;
+			box-sizing: border-box;
 		}
-		.red {
-			color: red;
+		button {
+			padding: 10px 20px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
 		}
-		.blue {
-			color: blue;
-			font-size: 24px;
-			font-weight: bold;
-		}
-		.reset {
-			margin-top: 10px;
+		button:hover {
+			background-color: #3e8e41;
 		}
 	</style>
+	<script> src
+		window.onload = function() {
+			// Define the array of names
+			var names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
+			
+			// Generate the dropdowns dynamically
+			var dropdowns = document.getElementsByTagName("select");
+			for (var i = 0; i < dropdowns.length; i++) {
+				// Create an option element for each name in the array
+				for (var j = 0; j < names.length; j++) {
+					var option = document.createElement("option");
+					option.text = names[j];
+					dropdowns[i].add(option);
+				}
+			}
+
+			// Get the send button
+			var sendButton = document.getElementById("send-button");
+			// Add event listener for click
+			sendButton.addEventListener("click", function() {
+				// Reset all dropdowns
+				for (var i = 0; i < dropdowns.length; i++) {
+					dropdowns[i].selectedIndex = 0;
+				}
+			});
+		}
+	</script>
 </head>
 <body>
-	<h1 class="blue">PyG Cube</h1>
+	<h1 style="color: blue; text-align: center;">PyG Cube Standings</h1>
 	<table>
 		<tr>
-			<td class="green">Winner</td>
-			<td class="red">Looser</td>
+			<th style="color: green;">Winner</th>
+			<th style="color: red;">Looser</th>
 		</tr>
-		<% for (let i = 0; i < 5; i++) { %>
-			<tr>
-				<td>
-					<select name="winner<%= i %>">
-						<% names.forEach(function(name) { %>
-							<option value="<%= name %>"><%= name %></option>
-						<% }); %>
-					</select>
-				</td>
-				<td>
-					<select name="looser<%= i %>">
-						<% names.forEach(function(name) { %>
-							<option value="<%= name %>"><%= name %></option>
-						<% }); %>
-					</select>
-				</td>
-			</tr>
-		<% } %>
+		<tr>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+		</tr>
+    <tr>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+		</tr>
+    <tr>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+		</tr>
+    <tr>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+		</tr>
+    <tr>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+			<td>
+				<select>
+					<option value="">Select a name</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align: center;">
+				<button id="send-button">Send</button>
+			</td>
+		</tr>
 	</table>
-	<button class="reset">Send</button>
-
-	<script>
-		const names = ["Pipi", "Chilper", "Negro", "Müller", "Ale", "Pataz", "Sanchez", "Facu", "Sacha", "Novaira", "Juan"];
-	</script>
 </body>
 </html>
